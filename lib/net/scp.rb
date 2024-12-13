@@ -315,7 +315,7 @@ module Net
     #
     #   data = download!("/remote/path")
     def download!(remote, local = nil, options = {}, &progress)
-      destination = local ? local : StringIO.new.tap { |io| io.set_encoding('BINARY') }
+      destination = local || StringIO.new.tap { |io| io.set_encoding('BINARY') }
       download(remote, destination, options, &progress).wait
       local ? true : destination.string
     end
@@ -446,9 +446,9 @@ module Net
 
       # A LF cannot be escaped with a backslash because a backslash + LF
       # combo is regarded as line continuation and simply ignored.
-      str.gsub!(/\n/, "'\n'")
+      str.gsub!("\n", "'\n'")
 
-      return str
+      str
     end
   end
 end

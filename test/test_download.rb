@@ -71,11 +71,9 @@ class TestDownload < Net::SCP::TestCase
 
     error = nil
     Net::SSH::Test::Extensions::IO.with_test_extension do
-      begin
-        scp.download!("/path/to/remote.txt")
-      rescue
-        error = $!
-      end
+      scp.download!("/path/to/remote.txt")
+    rescue
+      error = $!
     end
     assert_equal Net::SCP::Error, error.class
     assert_equal "SCP did not finish successfully (1): File not found: /path/to/remote.txt\n", error.message

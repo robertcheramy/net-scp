@@ -109,7 +109,7 @@ module Net
 
       # Sets the given +path+ as the new current item to upload.
       def set_current(channel, path)
-        path = channel[:cwd] ? File.join(channel[:cwd], path) : path
+        path = File.join(channel[:cwd], path) if channel[:cwd]
         channel[:current] = path
 
         if channel[:current].respond_to?(:read)
@@ -132,10 +132,10 @@ module Net
           channel.send_data(directive)
           type = stat.directory? ? :directory : :file
           await_response(channel, "upload_#{type}")
-          return false
+          false
         else
           channel[:preserved] = false
-          return true
+          true
         end
       end
     end

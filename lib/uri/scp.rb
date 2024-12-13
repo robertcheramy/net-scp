@@ -21,10 +21,10 @@ module URI
       super(*args)
 
       @options = {}
-      (query || "").split(/&/).each do |pair|
-        name, value = pair.split(/=/, 2)
+      (query || "").split('&').each do |pair|
+        name, value = pair.split('=', 2)
         opt_name = name.to_sym
-        values = value.split(/,/).map { |v| v.to_i.to_s == v ? v.to_i : v }
+        values = value.split(',').map { |v| v.to_i.to_s == v ? v.to_i : v }
         values = values.first if values.length == 1
         options[opt_name] = values
       end
