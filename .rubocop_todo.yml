@@ -156,13 +156,6 @@ Style/NumericPredicate:
     - 'spec/**/*'
     - 'lib/net/scp.rb'
 
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-Style/Proc:
-  Exclude:
-    - 'test/test_download.rb'
-    - 'test/test_upload.rb'
-
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 Style/RedundantBegin:

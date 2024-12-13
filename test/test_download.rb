@@ -100,7 +100,7 @@ class TestDownload < Net::SCP::TestCase
     end
 
     calls = []
-    progress = Proc.new { |_ch, *args| calls << args }
+    progress = proc { |_ch, *args| calls << args }
 
     assert_scripted do
       scp.download!("/path/to/remote.txt", "/path/to/local.txt", &progress)
