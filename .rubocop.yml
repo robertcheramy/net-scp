@@ -25,4 +25,7 @@ Layout/LineLength:
   Max: 120
 
 Style/NumericLiterals:
- Enabled: false
+  Enabled: false
+
+Style/RegexpLiteral:
+  EnforcedStyle: slashes
