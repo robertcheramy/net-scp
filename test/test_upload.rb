@@ -77,7 +77,7 @@ class TestUpload < Net::SCP::TestCase
     end
 
     calls = []
-    progress = Proc.new do |ch, name, sent, total|
+    progress = Proc.new do |_ch, name, sent, total|
       calls << [name, sent, total]
     end
 

@@ -343,13 +343,13 @@ module Net
     def start_command(mode, local, remote, options = {}, &callback)
       session.open_channel do |channel|
         if options[:shell]
-          escaped_file = shellescape(remote).gsub(/'/) { |m| "'\\''" }
+          escaped_file = shellescape(remote).gsub(/'/) { |_m| "'\\''" }
           command = "#{options[:shell]} -c '#{scp_command(mode, options)} #{escaped_file}'"
         else
           command = "#{scp_command(mode, options)} #{shellescape remote}"
         end
 
-        channel.exec(command) do |ch, success|
+        channel.exec(command) do |_ch, success|
           if success
             channel[:local] = local
             channel[:remote] = remote
@@ -375,9 +375,9 @@ module Net
               # At this point, :state can be :finish or :next_item
               send("#{channel[:state]}_state", channel)
             end
-            channel.on_data                   { |ch2, data| channel[:buffer].append(data) }
-            channel.on_extended_data          { |ch2, type, data| debug { data.chomp } }
-            channel.on_request("exit-status") { |ch2, data| channel[:exit] = data.read_long }
+            channel.on_data                   { |_ch2, data| channel[:buffer].append(data) }
+            channel.on_extended_data          { |_ch2, _type, data| debug { data.chomp } }
+            channel.on_request("exit-status") { |_ch2, data| channel[:exit] = data.read_long }
             channel.on_process                { send("#{channel[:state]}_state", channel) }
           else
             channel.close
