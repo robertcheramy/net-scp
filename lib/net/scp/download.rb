@@ -105,7 +105,7 @@ module Net; class SCP
           :message => text[1..-1] }
       when ?T
         parts = text[1..-1].split(/ /, 4).map { |i| i.to_i }
-        { :type  => :times,
+        { :type => :times,
           :mtime => Time.at(parts[0], parts[1]),
           :atime => Time.at(parts[2], parts[3]) }
       when ?C, ?D
