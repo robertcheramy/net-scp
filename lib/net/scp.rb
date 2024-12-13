@@ -409,7 +409,8 @@ module Net
       c = channel[:buffer].read_byte
       raise Net::SCP::Error, "#{c.chr}#{channel[:buffer].read}" if c != 0
 
-      channel[:next], channel[:state] = nil, channel[:next]
+      channel[:state] = channel[:next]
+      channel[:next] = nil
       send("#{channel[:state]}_state", channel)
     end
 

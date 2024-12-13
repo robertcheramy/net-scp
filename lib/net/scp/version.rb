@@ -25,7 +25,10 @@ module Net
 
       # Create a new Version object with the given components.
       def initialize(major, minor, tiny, pre = nil)
-        @major, @minor, @tiny, @pre = major, minor, tiny, pre
+        @major = major
+        @minor = minor
+        @tiny = tiny
+        @pre = pre
       end
 
       # Compare this version to the given +version+ object.
