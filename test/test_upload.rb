@@ -15,7 +15,7 @@ class TestUpload < Net::SCP::TestCase
 
     assert_scripted { scp.upload!("/path/to/local.txt", "/path/to/remote.txt") }
   end
-  
+
   def test_upload_file_with_spaces_in_name_should_escape_remote_file_name
     prepare_file("/path/to/local file.txt", "")
 
@@ -29,7 +29,7 @@ class TestUpload < Net::SCP::TestCase
 
     assert_scripted { scp.upload!("/path/to/local file.txt", "/path/to/remote file.txt") }
   end
-  
+
   def test_upload_file_with_metacharacters_in_name_should_escape_remote_file_name
     prepare_file("/path/to/local/#{awful_file_name}", "")
 

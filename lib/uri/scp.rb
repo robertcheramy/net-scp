@@ -8,7 +8,7 @@ module URI
       :scheme,
       :userinfo,
       :host, :port, :path,
-      :query  
+      :query
     ].freeze
 
     attr_reader :options
