@@ -1,10 +1,16 @@
 # Changelog
 
-## [ Unreleased ]
+## [ 4.0.fork02 - 2024-12-13 ]
 ### Added
-### Changed
-### Fixed
+- Integrated RuboCop for code style and quality enforcement. (@robertcheramy)
 
+### Changed
+- removed setup.rb (@robertcheramy)
+- minimum ruby version: 3.1 (@robertcheramy)
+- Versioning with "fork(number)" in the patch field, as rc can be confused with release candidate (@robertcheramy)
+
+### Fixed
+- fix for mocha > 2.1.0 (@tibob)
 
 ## [4.0.rc01 - 2024-12-13 ]
 
