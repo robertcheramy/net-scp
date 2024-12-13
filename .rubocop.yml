@@ -17,3 +17,9 @@ Layout/ExtraSpacing:
 
 Style/FrozenStringLiteralComment:
   Enabled: false
+
+# https://rubystyle.guide/#max-line-length specifies 80 char.
+# Explicitly setting the rubocop default to document the decision not
+# to change it for now.
+Layout/LineLength:
+  Max: 120

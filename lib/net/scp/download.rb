@@ -125,9 +125,7 @@ module Net
       # Sets the new directory as the current directory, creates the directory
       # if it does not exist, and then falls back into #read_directive_state.
       def read_directory(channel, directive)
-        if !channel[:options][:recursive]
-          raise Net::SCP::Error, ":recursive not specified for directory download"
-        end
+        raise Net::SCP::Error, ":recursive not specified for directory download" if !channel[:options][:recursive]
 
         channel[:local] = File.join(channel[:local], directive[:name])
 
