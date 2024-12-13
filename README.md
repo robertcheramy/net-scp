@@ -1,16 +1,21 @@
-# Net::SCP
+# Fork of Net::SCP
 
-***Please note: this project is in maintenance mode. It is not under active
-development but pull requests are very much welcome. Just be sure to include
-tests! -- delano***
+> :warning: This is a fork of Net::SCP
 
-*   Docs: http://net-ssh.github.io/net-scp
-*   Issues: https://github.com/net-ssh/net-scp/issues
-*   Codes: https://github.com/net-ssh/net-scp
-*   Email: net-ssh@solutious.com
+Upstream [Net::SCP](https://github.com/net-ssh/net-scp) is curently not
+maintaned. I have tried to reach the developpers to offer to take over the
+mantenance and got no response so far. I need commit
+5ed618157daae8ef4d45943787ea61f714e3e870 in order to use APC devices in
+[oxidized](https://github.com/ytti/oxidized).
 
+So I will try to maintain "my" version of Net::SCP in this repository until I
+find a solution with the Net::SCP team.
 
-*As of v1.0.5, all gem releases are signed. See INSTALL.*
+I plan to keep the original Major and Minor version of Net:SSCP, and
+differentiate with the patch version in the format rc(number): 4.0.rc01.
+
+Issues and Pull Requests are welcome in this fork, just use the github
+funtionality.
 
 ## DESCRIPTION:
 
