@@ -45,29 +45,29 @@ module Net
       # After transferring attributes (if requested), sends a 'D' directive and
       # awaites the server's 0-byte response. Then goes to #next_item_state.
       def upload_directory_state(channel)
-        if preserve_attributes_if_requested(channel)
-          mode = channel[:stat].mode & 07777
-          directive = "D%04o %d %s\n" % [mode, 0, File.basename(channel[:current])]
-          channel.send_data(directive)
-          channel[:cwd] = channel[:current]
-          channel[:stack] << Dir.entries(channel[:current]).reject { |i| i == "." || i == ".." }
-          await_response(channel, :next_item)
-        end
+        return unless preserve_attributes_if_requested(channel)
+
+        mode = channel[:stat].mode & 07777
+        directive = "D%04o %d %s\n" % [mode, 0, File.basename(channel[:current])]
+        channel.send_data(directive)
+        channel[:cwd] = channel[:current]
+        channel[:stack] << Dir.entries(channel[:current]).reject { |i| i == "." || i == ".." }
+        await_response(channel, :next_item)
       end
 
       # After transferring attributes (if requested), sends a 'C' directive and
       # awaits the server's 0-byte response. Then goes to #send_data_state.
       def upload_file_state(channel)
-        if preserve_attributes_if_requested(channel)
-          mode = channel[:stat] ? channel[:stat].mode & 07777 : channel[:options][:mode]
-          channel[:name] = channel[:current].respond_to?(:read) ? channel[:remote] : channel[:current]
-          directive = "C%04o %d %s\n" % [mode || 0640, channel[:size], File.basename(channel[:name])]
-          channel.send_data(directive)
-          channel[:io] = channel[:current].respond_to?(:read) ? channel[:current] : File.open(channel[:current], "rb")
-          channel[:sent] = 0
-          progress_callback(channel, channel[:name], channel[:sent], channel[:size])
-          await_response(channel, :send_data)
-        end
+        return unless preserve_attributes_if_requested(channel)
+
+        mode = channel[:stat] ? channel[:stat].mode & 07777 : channel[:options][:mode]
+        channel[:name] = channel[:current].respond_to?(:read) ? channel[:remote] : channel[:current]
+        directive = "C%04o %d %s\n" % [mode || 0640, channel[:size], File.basename(channel[:name])]
+        channel.send_data(directive)
+        channel[:io] = channel[:current].respond_to?(:read) ? channel[:current] : File.open(channel[:current], "rb")
+        channel[:sent] = 0
+        progress_callback(channel, channel[:name], channel[:sent], channel[:size])
+        await_response(channel, :send_data)
       end
 
       # If any data remains to be transferred from the current file, sends it.

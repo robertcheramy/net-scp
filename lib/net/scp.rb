@@ -201,15 +201,13 @@ module Net
       session = Net::SSH.start(host, username, options)
       scp = new(session)
 
-      if block_given?
-        begin
-          yield scp
-          session.loop
-        ensure
-          session.close
-        end
-      else
-        return scp
+      return scp unless block_given?
+
+      begin
+        yield scp
+        session.loop
+      ensure
+        session.close
       end
     end
 
