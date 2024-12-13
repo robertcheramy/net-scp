@@ -147,14 +147,19 @@ module Net
       # actual read.
       def read_file(channel, directive)
         unless channel[:local].respond_to?(:write)
-          directive[:name] = (channel[:options][:recursive] || File.directory?(channel[:local])) ?
-            File.join(channel[:local], directive[:name]) :
-            channel[:local]
+          directive[:name] = if channel[:options][:recursive] || File.directory?(channel[:local])
+                               File.join(channel[:local], directive[:name])
+                             else
+                               channel[:local]
+                             end
         end
 
         channel[:file] = directive.merge(times: channel[:times])
-        channel[:io] = channel[:local].respond_to?(:write) ? channel[:local] :
-          File.new(directive[:name], "wb", directive[:mode] | 0o600)
+        channel[:io] = if channel[:local].respond_to?(:write)
+                         channel[:local]
+                       else
+                         File.new(directive[:name], "wb", directive[:mode] | 0o600)
+                       end
         channel[:times] = nil
         channel[:remaining] = channel[:file][:size]
         channel[:state] = :read_data
