@@ -71,11 +71,11 @@ class TestDownload < Net::SCP::TestCase
 
     error = nil
     Net::SSH::Test::Extensions::IO.with_test_extension do
-    begin
-      scp.download!("/path/to/remote.txt")
-    rescue
-      error = $!
-    end
+      begin
+        scp.download!("/path/to/remote.txt")
+      rescue
+        error = $!
+      end
     end
     assert_equal Net::SCP::Error, error.class
     assert_equal "SCP did not finish successfully (1): File not found: /path/to/remote.txt\n", error.message
@@ -273,12 +273,12 @@ class TestDownload < Net::SCP::TestCase
 
   private
 
-    def simple_download(channel, mode = 0666)
-      channel.sends_ok
-      channel.gets_data "C%04o 1234 remote.txt\n" % mode
-      channel.sends_ok
-      channel.gets_data "a" * 1234
-      channel.gets_ok
-      channel.sends_ok
-    end
+  def simple_download(channel, mode = 0666)
+    channel.sends_ok
+    channel.gets_data "C%04o 1234 remote.txt\n" % mode
+    channel.sends_ok
+    channel.gets_data "a" * 1234
+    channel.gets_ok
+    channel.sends_ok
+  end
 end

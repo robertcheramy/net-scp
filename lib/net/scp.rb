@@ -323,133 +323,133 @@ module Net
 
     private
 
-      # Constructs the scp command line needed to initiate and SCP session
-      # for the given +mode+ (:upload or :download) and with the given options
-      # (:verbose, :recursive, :preserve). Returns the command-line as a
-      # string, ready to execute.
-      def scp_command(mode, options)
-        command = "scp "
-        command << (mode == :upload ? "-t" : "-f")
-        command << " -v" if options[:verbose]
-        command << " -r" if options[:recursive]
-        command << " -p" if options[:preserve]
-        command
-      end
+    # Constructs the scp command line needed to initiate and SCP session
+    # for the given +mode+ (:upload or :download) and with the given options
+    # (:verbose, :recursive, :preserve). Returns the command-line as a
+    # string, ready to execute.
+    def scp_command(mode, options)
+      command = "scp "
+      command << (mode == :upload ? "-t" : "-f")
+      command << " -v" if options[:verbose]
+      command << " -r" if options[:recursive]
+      command << " -p" if options[:preserve]
+      command
+    end
 
-      # Opens a new SSH channel and executes the necessary SCP command over
-      # it (see #scp_command). It then sets up the necessary callbacks, and
-      # sets up a state machine to use to process the upload or download.
-      # (See Net::SCP::Upload and Net::SCP::Download).
-      def start_command(mode, local, remote, options = {}, &callback)
-        session.open_channel do |channel|
-          if options[:shell]
-            escaped_file = shellescape(remote).gsub(/'/) { |m| "'\\''" }
-            command = "#{options[:shell]} -c '#{scp_command(mode, options)} #{escaped_file}'"
-          else
-            command = "#{scp_command(mode, options)} #{shellescape remote}"
-          end
+    # Opens a new SSH channel and executes the necessary SCP command over
+    # it (see #scp_command). It then sets up the necessary callbacks, and
+    # sets up a state machine to use to process the upload or download.
+    # (See Net::SCP::Upload and Net::SCP::Download).
+    def start_command(mode, local, remote, options = {}, &callback)
+      session.open_channel do |channel|
+        if options[:shell]
+          escaped_file = shellescape(remote).gsub(/'/) { |m| "'\\''" }
+          command = "#{options[:shell]} -c '#{scp_command(mode, options)} #{escaped_file}'"
+        else
+          command = "#{scp_command(mode, options)} #{shellescape remote}"
+        end
 
-          channel.exec(command) do |ch, success|
-            if success
-              channel[:local] = local
-              channel[:remote] = remote
-              channel[:options] = options.dup
-              channel[:callback] = callback
-              channel[:buffer] = Net::SSH::Buffer.new
-              channel[:state] = "#{mode}_start"
-              channel[:stack] = []
-              channel[:error_string] = ''
+        channel.exec(command) do |ch, success|
+          if success
+            channel[:local] = local
+            channel[:remote] = remote
+            channel[:options] = options.dup
+            channel[:callback] = callback
+            channel[:buffer] = Net::SSH::Buffer.new
+            channel[:state] = "#{mode}_start"
+            channel[:stack] = []
+            channel[:error_string] = ''
 
-              channel.on_close do
-                # If we got an exit-status and it is not 0, something went wrong
-                if !channel[:exit].nil? && channel[:exit] != 0
-                  raise Net::SCP::Error, 'SCP did not finish successfully ' \
-                                         "(#{channel[:exit]}): #{channel[:error_string]}"
-                end
-                # We may get no exit-status at all as returning a status is only RECOMENDED
-                # in RFC4254. But if our state is not :finish, something went wrong
-                if channel[:exit].nil? && channel[:state] != :finish
-                  raise Net::SCP::Error, 'SCP did not finish successfully ' \
-                                         '(channel closed before end of transmission)'
-                end
-                # At this point, :state can be :finish or :next_item
-                send("#{channel[:state]}_state", channel)
+            channel.on_close do
+              # If we got an exit-status and it is not 0, something went wrong
+              if !channel[:exit].nil? && channel[:exit] != 0
+                raise Net::SCP::Error, 'SCP did not finish successfully ' \
+                                       "(#{channel[:exit]}): #{channel[:error_string]}"
               end
-              channel.on_data                   { |ch2, data| channel[:buffer].append(data) }
-              channel.on_extended_data          { |ch2, type, data| debug { data.chomp } }
-              channel.on_request("exit-status") { |ch2, data| channel[:exit] = data.read_long }
-              channel.on_process                { send("#{channel[:state]}_state", channel) }
-            else
-              channel.close
-              raise Net::SCP::Error, "could not exec scp on the remote host"
+              # We may get no exit-status at all as returning a status is only RECOMENDED
+              # in RFC4254. But if our state is not :finish, something went wrong
+              if channel[:exit].nil? && channel[:state] != :finish
+                raise Net::SCP::Error, 'SCP did not finish successfully ' \
+                                       '(channel closed before end of transmission)'
+              end
+              # At this point, :state can be :finish or :next_item
+              send("#{channel[:state]}_state", channel)
             end
+            channel.on_data                   { |ch2, data| channel[:buffer].append(data) }
+            channel.on_extended_data          { |ch2, type, data| debug { data.chomp } }
+            channel.on_request("exit-status") { |ch2, data| channel[:exit] = data.read_long }
+            channel.on_process                { send("#{channel[:state]}_state", channel) }
+          else
+            channel.close
+            raise Net::SCP::Error, "could not exec scp on the remote host"
           end
         end
       end
+    end
 
-      # Causes the state machine to enter the "await response" state, where
-      # things just pause until the server replies with a 0 (see
-      # #await_response_state), at which point the state machine will pick up
-      # at +next_state+ and continue processing.
-      def await_response(channel, next_state)
-        channel[:state] = :await_response
-        channel[:next] = next_state.to_sym
-        # check right away, to see if the response is immediately available
-        await_response_state(channel)
-      end
+    # Causes the state machine to enter the "await response" state, where
+    # things just pause until the server replies with a 0 (see
+    # #await_response_state), at which point the state machine will pick up
+    # at +next_state+ and continue processing.
+    def await_response(channel, next_state)
+      channel[:state] = :await_response
+      channel[:next] = next_state.to_sym
+      # check right away, to see if the response is immediately available
+      await_response_state(channel)
+    end
 
-      # The action invoked while the state machine remains in the "await
-      # response" state. As long as there is no data ready to process, the
-      # machine will remain in this state. As soon as the server replies with
-      # an integer 0 as the only byte, the state machine is kicked into the
-      # next state (see +await_response+). If the response is not a 0, an
-      # exception is raised.
-      def await_response_state(channel)
-        return if channel[:buffer].available == 0
+    # The action invoked while the state machine remains in the "await
+    # response" state. As long as there is no data ready to process, the
+    # machine will remain in this state. As soon as the server replies with
+    # an integer 0 as the only byte, the state machine is kicked into the
+    # next state (see +await_response+). If the response is not a 0, an
+    # exception is raised.
+    def await_response_state(channel)
+      return if channel[:buffer].available == 0
 
-        c = channel[:buffer].read_byte
-        raise Net::SCP::Error, "#{c.chr}#{channel[:buffer].read}" if c != 0
+      c = channel[:buffer].read_byte
+      raise Net::SCP::Error, "#{c.chr}#{channel[:buffer].read}" if c != 0
 
-        channel[:next], channel[:state] = nil, channel[:next]
-        send("#{channel[:state]}_state", channel)
-      end
+      channel[:next], channel[:state] = nil, channel[:next]
+      send("#{channel[:state]}_state", channel)
+    end
 
-      # The action invoked when the state machine is in the "finish" state.
-      # It just tells the server not to expect any more data from this end
-      # of the pipe, and allows the pipe to drain until the server closes it.
-      def finish_state(channel)
-        channel.eof!
-      end
+    # The action invoked when the state machine is in the "finish" state.
+    # It just tells the server not to expect any more data from this end
+    # of the pipe, and allows the pipe to drain until the server closes it.
+    def finish_state(channel)
+      channel.eof!
+    end
 
-      # Invoked to report progress back to the client. If a callback was not
-      # set, this does nothing.
-      def progress_callback(channel, name, sent, total)
-        channel[:callback].call(channel, name, sent, total) if channel[:callback]
-      end
+    # Invoked to report progress back to the client. If a callback was not
+    # set, this does nothing.
+    def progress_callback(channel, name, sent, total)
+      channel[:callback].call(channel, name, sent, total) if channel[:callback]
+    end
 
-      # Imported from ruby 1.9.2 shellwords.rb
-      def shellescape(path)
-        # Convert path to a string if it isn't already one.
-        str = path.to_s
+    # Imported from ruby 1.9.2 shellwords.rb
+    def shellescape(path)
+      # Convert path to a string if it isn't already one.
+      str = path.to_s
 
-        # ruby 1.8.7+ implements String#shellescape
-        return str.shellescape if str.respond_to? :shellescape
+      # ruby 1.8.7+ implements String#shellescape
+      return str.shellescape if str.respond_to? :shellescape
 
-        # An empty argument will be skipped, so return empty quotes.
-        return "''" if str.empty?
+      # An empty argument will be skipped, so return empty quotes.
+      return "''" if str.empty?
 
-        str = str.dup
+      str = str.dup
 
-        # Process as a single byte sequence because not all shell
-        # implementations are multibyte aware.
-        str.gsub!(/([^A-Za-z0-9_\-.,:\/@\n])/n, "\\\\\\1")
+      # Process as a single byte sequence because not all shell
+      # implementations are multibyte aware.
+      str.gsub!(/([^A-Za-z0-9_\-.,:\/@\n])/n, "\\\\\\1")
 
-        # A LF cannot be escaped with a backslash because a backslash + LF
-        # combo is regarded as line continuation and simply ignored.
-        str.gsub!(/\n/, "'\n'")
+      # A LF cannot be escaped with a backslash because a backslash + LF
+      # combo is regarded as line continuation and simply ignored.
+      str.gsub!(/\n/, "'\n'")
 
-        return str
-      end
+      return str
+    end
   end
 end
 

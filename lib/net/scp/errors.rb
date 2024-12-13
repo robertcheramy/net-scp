@@ -1,3 +1,5 @@
-module Net; class SCP
-  class Error < RuntimeError; end
-end; end
+module Net
+  class SCP
+    class Error < RuntimeError; end
+  end
+end
