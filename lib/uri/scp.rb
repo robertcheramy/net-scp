@@ -18,7 +18,7 @@ module URI
     end
 
     def initialize(*args)
-      super(*args)
+      super
 
       @options = {}
       (query || "").split('&').each do |pair|
