@@ -118,7 +118,7 @@ class TestUpload < Net::SCP::TestCase
     end
 
     io = StringIO.new("a" * 1234)
-    assert_scripted { scp.upload!(io, "/path/to/remote.txt", :preserve  => true) }
+    assert_scripted { scp.upload!(io, "/path/to/remote.txt", :preserve => true) }
   end
 
   def test_upload_io_should_transfer_data

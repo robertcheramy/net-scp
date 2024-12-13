@@ -11,3 +11,6 @@ AllCops:
 
 Gemspec/DevelopmentDependencies:
   EnforcedStyle: gemspec
+
+Layout/ExtraSpacing:
+  AllowBeforeTrailingComments: true

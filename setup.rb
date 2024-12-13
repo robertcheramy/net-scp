@@ -789,7 +789,7 @@ EOS
     out.printf fmt, '   --verbose', 'output messages verbosely'
     out.printf fmt, '-h,--help',    'print this message'
     out.printf fmt, '-v,--version', 'print version and quit'
-    out.printf fmt, '   --copyright',  'print copyright and quit'
+    out.printf fmt, '   --copyright', 'print copyright and quit'
 
     out.puts
     out.puts 'Tasks:'
