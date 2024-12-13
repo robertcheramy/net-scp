@@ -16,12 +16,6 @@ Layout/EndAlignment:
     - 'lib/net/scp/errors.rb'
     - 'lib/net/scp/upload.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Layout/HeredocIndentation:
-  Exclude:
-    - 'setup.rb'
-
 # Offense count: 8
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle.

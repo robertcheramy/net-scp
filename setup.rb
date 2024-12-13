@@ -708,13 +708,13 @@ class ToplevelInstaller
       end
     end
 
-    raise InstallError, <<EOS
-No task or global option given.
-Typical installation procedure is:
-    $ ruby #{File.basename($0)} config
-    $ ruby #{File.basename($0)} setup
-    # ruby #{File.basename($0)} install  (may require root privilege)
-EOS
+    raise InstallError, <<~EOS
+      No task or global option given.
+      Typical installation procedure is:
+          $ ruby #{File.basename($0)} config
+          $ ruby #{File.basename($0)} setup
+          # ruby #{File.basename($0)} install  (may require root privilege)
+    EOS
   end
 
   def parsearg_no_options
