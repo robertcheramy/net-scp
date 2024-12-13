@@ -895,9 +895,9 @@ class ToplevelInstallerMulti < ToplevelInstaller
     with    = extract_selection(config('with'))
     without = extract_selection(config('without'))
     @selected = @installers.keys.select {|name|
-                  (with.empty? or with.include?(name)) \
-                      and not without.include?(name)
-                }
+      (with.empty? or with.include?(name)) \
+          and not without.include?(name)
+    }
   end
 
   def extract_selection(list)
