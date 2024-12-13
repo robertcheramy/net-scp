@@ -12,7 +12,8 @@ end
 Rake::Task[:release].enhance [:check_NET_SSH_BUILDGEM_SIGNED]
 Rake::Task[:release].prerequisites.unshift(:check_NET_SSH_BUILDGEM_SIGNED)
 
-task default: ["build"]
+task default: [:rubocop, :test]
+
 CLEAN.include [ 'pkg', 'rdoc' ]
 name = "net-scp"
 
@@ -78,4 +79,10 @@ RDoc::Task.new do |rdoc|
   extra_files.each { |file|
     rdoc.rdoc_files.include(file) if File.exist?(file)
   }
+end
+
+require 'rubocop/rake_task'
+
+RuboCop::RakeTask.new do |task|
+  task.requires << 'rubocop-rake'
 end
