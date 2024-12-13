@@ -112,13 +112,6 @@ If you don't add the public key, you'll see an error like "Couldn't verify
 data signature". If you're still having trouble let me know and I'll give you
 a hand.
 
-Or, you can do it the hard way (without Rubygems):
-
-*   tar xzf net-scp-*.tgz
-*   cd net-scp-*
-*   ruby setup.rb config
-*   ruby setup.rb install (might need sudo privileges)
-
 ## Security contact information
 
 See [SECURITY.md](SECURITY.md)

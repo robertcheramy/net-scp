@@ -1,4 +1,4 @@
-CHANGELOG.rdoc
+CHANGELOG.md
 lib/net/scp/download.rb
 lib/net/scp/errors.rb
 lib/net/scp/upload.rb
@@ -7,8 +7,7 @@ lib/net/scp.rb
 lib/uri/open-scp.rb
 lib/uri/scp.rb
 Rakefile
-README.rdoc
-setup.rb
+README.md
 test/common.rb
 test/test_all.rb
 test/test_download.rb
