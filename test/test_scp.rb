@@ -41,7 +41,7 @@ class TestSCP < Net::SCP::TestCase
       yields(scp)
 
     Net::SCP.upload!("remote.host", "username", "/path/to/local", "/path/to/remote",
-      { :ssh => { :password => "foo" }, :recursive => true })
+                     { :ssh => { :password => "foo" }, :recursive => true })
   end
 
   def test_self_download_should_instatiate_scp_and_invoke_synchronous_download
@@ -53,7 +53,7 @@ class TestSCP < Net::SCP::TestCase
       yields(scp)
 
     result = Net::SCP.download!("remote.host", "username", "/path/to/remote", "/path/to/local",
-      { :ssh => { :password => "foo" }, :recursive => true })
+                                { :ssh => { :password => "foo" }, :recursive => true })
 
     assert_equal :result, result
   end

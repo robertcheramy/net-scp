@@ -79,7 +79,7 @@ module Net; class SCP
 
       if channel[:options][:preserve] && channel[:file][:times]
         File.utime(channel[:file][:times][:atime],
-          channel[:file][:times][:mtime], channel[:file][:name])
+                   channel[:file][:times][:mtime], channel[:file][:name])
       end
 
       channel[:file] = nil

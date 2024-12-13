@@ -815,14 +815,14 @@ EOS
                  default2 || default
     end
     out.printf "  %-20s %s [%s]\n",
-        '--rbconfig=path', 'your rbconfig.rb to load', "running ruby's"
+               '--rbconfig=path', 'your rbconfig.rb to load', "running ruby's"
 
     out.puts
     out.puts 'Options for install:'
     out.printf "  %-20s %s [%s]\n",
-        '--no-harm', 'only display what to do if given', 'off'
+               '--no-harm', 'only display what to do if given', 'off'
     out.printf "  %-20s %s [%s]\n",
-        '--prefix',  'install path prefix', '$prefix'
+               '--prefix',  'install path prefix', '$prefix'
 
     out.puts
   end
@@ -888,8 +888,8 @@ class ToplevelInstallerMulti < ToplevelInstaller
     @installers = {}
     @packages.each do |pack|
       @installers[pack] = Installer.new(@config, @options,
-                                       "#{@ardir}/packages/#{pack}",
-                                       "packages/#{pack}")
+                                        "#{@ardir}/packages/#{pack}",
+                                        "packages/#{pack}")
     end
 
     with    = extract_selection(config('with'))
