@@ -541,9 +541,9 @@ module HookScriptAPI
   # srcdir/objdir (works only in the package directory)
   #
 
-  #abstract srcdir_root
-  #abstract objdir_root
-  #abstract relpath
+  # abstract srcdir_root
+  # abstract objdir_root
+  # abstract relpath
 
   def curr_srcdir
     "#{srcdir_root()}/#{relpath()}"
