@@ -103,9 +103,7 @@ def multipackage_install?
   FileTest.directory?(File.dirname($0) + '/packages')
 end
 
-
 class ConfigTable
-
   c = ::Config::CONFIG
 
   rubypath = c['bindir'] + '/' + c['ruby_install_name']
@@ -256,7 +254,6 @@ class ConfigTable
     ent[1] == 'path'
   end
 
-
   class << self
     alias newobj new
   end
@@ -283,6 +280,7 @@ class ConfigTable
   def initialize_from_file
     raise InstallError, "#{File.basename $0} config first"\
         unless File.file?(SAVE_FILE)
+
     @table = {}
     File.foreach(SAVE_FILE) do |line|
       k, v = line.split(/=/, 2)
@@ -301,11 +299,13 @@ class ConfigTable
   def []=(k, v)
     raise InstallError, "unknown config option #{k}"\
         unless ConfigTable.config_key?(k)
+
     @table[k] = v
   end
     
   def [](key)
     return nil unless @table[key]
+
     @table[key].gsub(%r<\$([^/]+)>) { self[$1] }
   end
 
@@ -316,12 +316,9 @@ class ConfigTable
   def get_raw(key)
     @table[key]
   end
-
 end
 
-
 module MetaConfigAPI
-
   def eval_file_ifexist(fname)
     instance_eval File.read(fname), fname, 1 if File.file?(fname)
   end
@@ -371,7 +368,6 @@ module MetaConfigAPI
     ConfigTable.remove_entry name
     ent
   end
-
 end
 
 #
@@ -379,7 +375,6 @@ end
 #
 
 module FileOperations
-
   def mkdir_p(dirname, prefix = nil)
     dirname = prefix + dirname if prefix
     $stderr.puts "mkdir -p #{dirname}" if verbose?
@@ -415,6 +410,7 @@ module FileOperations
     Dir.foreach('.') do |fn|
       next if fn == '.'
       next if fn == '..'
+
       if File.dir?(fn)
         verbose_off {
           rm_rf fn
@@ -468,6 +464,7 @@ module FileOperations
 
   def diff?(new_content, path)
     return true unless File.exist?(path)
+
     new_content != File.binread(path)
   end
 
@@ -503,7 +500,6 @@ module FileOperations
       return d.select {|n| File.dir?("#{dirname}/#{n}") } - %w(. ..) - REJECT_DIRS
     }
   end
-
 end
 
 #
@@ -512,9 +508,7 @@ end
 
 class InstallError < StandardError; end
 
-
 module HookUtils
-
   def run_hook(name)
     try_run_hook "#{curr_srcdir()}/#{name}" or
     try_run_hook "#{curr_srcdir()}/#{name}.rb"
@@ -522,6 +516,7 @@ module HookUtils
 
   def try_run_hook(fname)
     return false unless File.file?(fname)
+
     begin
       instance_eval File.read(fname), fname, 1
     rescue
@@ -529,12 +524,9 @@ module HookUtils
     end
     true
   end
-
 end
 
-
 module HookScriptAPI
-
   def get_config(key)
     @config[key]
   end
@@ -594,12 +586,9 @@ module HookScriptAPI
       File.dir?(File.join(curr_srcdir(), path, fname))
     }
   end
-
 end
 
-
 class ToplevelInstaller
-
   Version   = '3.2.4'
   Copyright = 'Copyright (c) 2000-2004 Minero Aoki'
 
@@ -693,6 +682,7 @@ class ToplevelInstaller
       case arg
       when /\A\w+\z/
         raise InstallError, "invalid task: #{arg}" unless valid_task =~ arg
+
         return arg
 
       when '-q', '--quiet'
@@ -727,7 +717,6 @@ Typical installation procedure is:
 EOS
   end
 
-
   def parsearg_no_options
     raise InstallError, "#{task}:  unknown options: #{ARGV.join ' '}"\
         unless ARGV.empty?
@@ -753,11 +742,13 @@ EOS
         if ConfigTable.bool_config?(name)
           raise InstallError, "config: --#{name} allows only yes/no for argument"\
               unless /\A(y(es)?|n(o)?|t(rue)?|f(alse))\z/i =~ value
+
           value = (/\Ay(es)?|\At(rue)/i =~ value) ? 'yes' : 'no'
         end
       else
         raise InstallError, "config: --#{name} requires argument"\
             unless ConfigTable.bool_config?(name)
+
         value = 'yes'
       end
       @config[name] = value
@@ -861,12 +852,9 @@ EOS
   def exec_distclean
     @installer.exec_distclean
   end
-
 end
 
-
 class ToplevelInstallerMulti < ToplevelInstaller
-
   include HookUtils
   include HookScriptAPI
   include FileOperations
@@ -924,6 +912,7 @@ class ToplevelInstallerMulti < ToplevelInstaller
 
   def declare_packages(list)
     raise 'package list is empty' if list.empty?
+
     list.each do |name|
       raise "directory packages/#{name} does not exist"\
               unless File.dir?("#{@ardir}/packages/#{name}")
@@ -990,12 +979,9 @@ class ToplevelInstallerMulti < ToplevelInstaller
   def no_harm?
     @options['no-harm']
   end
-
 end
 
-
 class Installer
-
   FILETYPES = %w( bin lib ext data )
 
   include HookScriptAPI
@@ -1146,6 +1132,7 @@ class Installer
 
   def install_dir_ext(rel)
     return unless extdir?(curr_srcdir())
+
     install_files ruby_extentions('.'),
                   "#{config('so-dir')}/#{File.dirname(rel)}",
                   0555
@@ -1243,6 +1230,7 @@ class Installer
 
   def clean_dir_ext(rel)
     return unless extdir?(curr_srcdir())
+
     make 'clean' if File.file?('Makefile')
   end
 
@@ -1267,6 +1255,7 @@ class Installer
 
   def distclean_dir_ext(rel)
     return unless extdir?(curr_srcdir())
+
     make 'distclean' if File.file?('Makefile')
   end
 
@@ -1311,9 +1300,7 @@ class Installer
     $stderr.puts '<--- ' + rel if verbose?
     @currdir = File.dirname(rel)
   end
-
 end
-
 
 if $0 == __FILE__
   begin
@@ -1324,6 +1311,7 @@ if $0 == __FILE__
     end
   rescue
     raise if $DEBUG
+
     $stderr.puts $!.message
     $stderr.puts "Try 'ruby #{$0} --help' for detailed usage."
     exit 1

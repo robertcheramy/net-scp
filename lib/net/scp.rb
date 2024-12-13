@@ -7,7 +7,6 @@ require 'net/scp/upload'
 require 'net/scp/download'
 
 module Net
-
   # Net::SCP implements the SCP (Secure CoPy) client protocol, allowing Ruby
   # programs to securely and programmatically transfer individual files or
   # entire directory trees to and from remote servers. It provides support for
@@ -343,7 +342,6 @@ module Net
       # (See Net::SCP::Upload and Net::SCP::Download).
       def start_command(mode, local, remote, options={}, &callback)
         session.open_channel do |channel|
-
           if options[:shell]
             escaped_file = shellescape(remote).gsub(/'/) { |m| "'\\''" }
             command = "#{options[:shell]} -c '#{scp_command(mode, options)} #{escaped_file}'"
@@ -408,8 +406,10 @@ module Net
       # exception is raised.
       def await_response_state(channel)
         return if channel[:buffer].available == 0
+
         c = channel[:buffer].read_byte
         raise Net::SCP::Error, "#{c.chr}#{channel[:buffer].read}" if c != 0
+
         channel[:next], channel[:state] = nil, channel[:next]
         send("#{channel[:state]}_state", channel)
       end

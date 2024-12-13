@@ -5,7 +5,6 @@ require 'net/scp'
 OpenURI::Options[:ssh] = nil
 
 module URI
-
   class SCP
     def buffer_open(buf, proxy, open_options)
       options = open_options.merge(:port => port, :password => password)
@@ -16,5 +15,4 @@ module URI
 
     include OpenURI::OpenRead
   end
-
 end

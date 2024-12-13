@@ -1,7 +1,6 @@
 require 'net/scp/errors'
 
 module Net; class SCP
-
   # This module implements the state machine for uploading information to
   # a remote server. It exposes no public methods. See Net::SCP#upload for
   # a discussion of how to use Net::SCP to upload data.
@@ -33,6 +32,7 @@ module Net; class SCP
         upload_file_state(channel)
       elsif File.directory?(channel[:current])
         raise Net::SCP::Error, "can't upload directories unless :recursive" unless channel[:options][:recursive]
+
         upload_directory_state(channel)
       elsif File.file?(channel[:current])
         upload_file_state(channel)
@@ -138,5 +138,4 @@ module Net; class SCP
       end
     end
   end
-
 end; end

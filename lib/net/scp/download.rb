@@ -1,7 +1,6 @@
 require 'net/scp/errors'
 
 module Net; class SCP
-
   # This module implements the state machine for downloading information from
   # a remote server. It exposes no public methods. See Net::SCP#download for
   # a discussion of how to use Net::SCP to download data.
@@ -33,6 +32,7 @@ module Net; class SCP
     # possible directives).
     def read_directive_state(channel)
       return unless line = channel[:buffer].read_to("\n")
+
       channel[:buffer].consume!
 
       directive = parse_directive(line)
@@ -63,6 +63,7 @@ module Net; class SCP
     # the state machine switches to #finish_read_state.
     def read_data_state(channel)
       return if channel[:buffer].empty?
+
       data = channel[:buffer].read!(channel[:remaining])
       channel[:io].write(data)
       channel[:remaining] -= data.length
@@ -161,5 +162,4 @@ module Net; class SCP
       progress_callback(channel, channel[:file][:name], 0, channel[:file][:size])
     end
   end
-
 end; end
