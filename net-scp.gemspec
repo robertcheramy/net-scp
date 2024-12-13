@@ -11,8 +11,8 @@ Gem::Specification.new do |spec|
     spec.signing_key = "/mnt/gem/net-ssh-private_key.pem"
   end
 
-  spec.summary       = %q{A pure Ruby implementation of the SCP client protocol.}
-  spec.description   = %q{A pure Ruby implementation of the SCP client protocol}
+  spec.summary       = 'A pure Ruby implementation of the SCP client protocol.'
+  spec.description   = 'A pure Ruby implementation of the SCP client protocol.'
   spec.homepage      = "https://github.com/robertcheramy/net-scp/"
   spec.license       = "MIT"
   spec.metadata      = {
