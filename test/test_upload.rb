@@ -45,7 +45,7 @@ class TestUpload < Net::SCP::TestCase
   end
 
   def test_upload_file_with_preserve_should_send_times
-    prepare_file("/path/to/local.txt", "a" * 1234, 0666, Time.at(1234567890, 123456), Time.at(1234543210, 345678))
+    prepare_file("/path/to/local.txt", "a" * 1234, 0o666, Time.at(1234567890, 123456), Time.at(1234543210, 345678))
 
     expect_scp_session "-t -p /path/to/remote.txt" do |channel|
       channel.gets_ok
@@ -146,7 +146,7 @@ class TestUpload < Net::SCP::TestCase
     end
 
     io = StringIO.new("a" * 1234)
-    assert_scripted { scp.upload!(io, "/path/to/remote.txt", mode: 0666) }
+    assert_scripted { scp.upload!(io, "/path/to/remote.txt", mode: 0o666) }
   end
 
   def test_upload_directory_without_recursive_should_error
@@ -215,12 +215,12 @@ class TestUpload < Net::SCP::TestCase
   end
 
   def test_upload_directory_with_preserve_should_send_times_for_all_items
-    prepare_directory("/path/to/local", 0755, Time.at(17171717, 191919), Time.at(18181818, 101010)) do |d|
-      d.file "hello.txt", "hello world\n", 0640, Time.at(12345, 67890), Time.at(234567, 890)
-      d.directory "others", 0770, Time.at(112233, 4455), Time.at(22334455, 667788) do |d2|
-        d2.file "data.dat", "abcdefghijklmnopqrstuvwxyz", 0600, Time.at(13579135, 13131), Time.at(7654321, 654321)
+    prepare_directory("/path/to/local", 0o755, Time.at(17171717, 191919), Time.at(18181818, 101010)) do |d|
+      d.file "hello.txt", "hello world\n", 0o640, Time.at(12345, 67890), Time.at(234567, 890)
+      d.directory "others", 0o770, Time.at(112233, 4455), Time.at(22334455, 667788) do |d2|
+        d2.file "data.dat", "abcdefghijklmnopqrstuvwxyz", 0o600, Time.at(13579135, 13131), Time.at(7654321, 654321)
       end
-      d.file "zoo.doc", "going to the zoo\n", 0444, Time.at(12121212, 131313), Time.at(23232323, 242424)
+      d.file "zoo.doc", "going to the zoo\n", 0o444, Time.at(12121212, 131313), Time.at(23232323, 242424)
     end
 
     expect_scp_session("-t -r -p /path/to/remote") do |channel|

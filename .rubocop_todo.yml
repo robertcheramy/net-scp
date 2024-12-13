@@ -147,17 +147,6 @@ Style/MutableConstant:
   Exclude:
     - 'lib/net/scp/version.rb'
 
-# Offense count: 15
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedOctalStyle.
-# SupportedOctalStyles: zero_with_o, zero_only
-Style/NumericLiteralPrefix:
-  Exclude:
-    - 'lib/net/scp/download.rb'
-    - 'lib/net/scp/upload.rb'
-    - 'test/test_download.rb'
-    - 'test/test_upload.rb'
-
 # Offense count: 43
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: Strict, AllowedNumbers, AllowedPatterns.

@@ -47,7 +47,7 @@ module Net
       def upload_directory_state(channel)
         return unless preserve_attributes_if_requested(channel)
 
-        mode = channel[:stat].mode & 07777
+        mode = channel[:stat].mode & 0o7777
         directive = "D%04o %d %s\n" % [mode, 0, File.basename(channel[:current])]
         channel.send_data(directive)
         channel[:cwd] = channel[:current]
@@ -60,9 +60,9 @@ module Net
       def upload_file_state(channel)
         return unless preserve_attributes_if_requested(channel)
 
-        mode = channel[:stat] ? channel[:stat].mode & 07777 : channel[:options][:mode]
+        mode = channel[:stat] ? channel[:stat].mode & 0o7777 : channel[:options][:mode]
         channel[:name] = channel[:current].respond_to?(:read) ? channel[:remote] : channel[:current]
-        directive = "C%04o %d %s\n" % [mode || 0640, channel[:size], File.basename(channel[:name])]
+        directive = "C%04o %d %s\n" % [mode || 0o640, channel[:size], File.basename(channel[:name])]
         channel.send_data(directive)
         channel[:io] = channel[:current].respond_to?(:read) ? channel[:current] : File.open(channel[:current], "rb")
         channel[:sent] = 0

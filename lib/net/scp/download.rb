@@ -132,7 +132,7 @@ module Net
         if File.exist?(channel[:local]) && !File.directory?(channel[:local])
           raise Net::SCP::Error, "#{channel[:local]} already exists and is not a directory"
         elsif !File.exist?(channel[:local])
-          Dir.mkdir(channel[:local], directive[:mode] | 0700)
+          Dir.mkdir(channel[:local], directive[:mode] | 0o700)
         end
 
         if channel[:options][:preserve] && channel[:times]
@@ -154,7 +154,7 @@ module Net
 
         channel[:file] = directive.merge(times: channel[:times])
         channel[:io] = channel[:local].respond_to?(:write) ? channel[:local] :
-          File.new(directive[:name], "wb", directive[:mode] | 0600)
+          File.new(directive[:name], "wb", directive[:mode] | 0o600)
         channel[:times] = nil
         channel[:remaining] = channel[:file][:size]
         channel[:state] = :read_data

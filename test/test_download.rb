@@ -41,12 +41,12 @@ class TestDownload < Net::SCP::TestCase
   end
 
   def test_download_with_preserve_should_send_times
-    file = prepare_file("/path/to/local.txt", "a" * 1234, 0644, Time.at(1234567890, 123456), Time.at(12121212, 232323))
+    file = prepare_file("/path/to/local.txt", "a" * 1234, 0o644, Time.at(1234567890, 123456), Time.at(12121212, 232323))
 
     expect_scp_session "-f -p /path/to/remote.txt" do |channel|
       channel.sends_ok
       channel.gets_data "T1234567890 123456 12121212 232323\n"
-      simple_download(channel, 0644)
+      simple_download(channel, 0o644)
     end
 
     File.expects(:utime).with(Time.at(12121212, 232323), Time.at(1234567890, 123456), "/path/to/local.txt")
@@ -273,7 +273,7 @@ class TestDownload < Net::SCP::TestCase
 
   private
 
-  def simple_download(channel, mode = 0666)
+  def simple_download(channel, mode = 0o666)
     channel.sends_ok
     channel.gets_data "C%04o 1234 remote.txt\n" % mode
     channel.sends_ok
