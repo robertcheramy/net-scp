@@ -32,7 +32,7 @@ module Net
       # directive. (See the SCP protocol documentation in Net::SCP for the
       # possible directives).
       def read_directive_state(channel)
-        return unless line = channel[:buffer].read_to("\n")
+        return unless (line = channel[:buffer].read_to("\n"))
 
         channel[:buffer].consume!
 
