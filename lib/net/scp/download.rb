@@ -105,18 +105,18 @@ module Net
         when "\x02"
           { :type => :error,
             :message => text[1..-1] }
-        when ?T
+        when 'T'
           parts = text[1..-1].split(/ /, 4).map { |i| i.to_i }
           { :type => :times,
             :mtime => Time.at(parts[0], parts[1]),
             :atime => Time.at(parts[2], parts[3]) }
-        when ?C, ?D
+        when 'C', 'D'
           parts = text[1..-1].split(/ /, 3)
-          { :type => (type == ?C ? :file : :directory),
+          { :type => (type == 'C' ? :file : :directory),
             :mode => parts[0].to_i(8),
             :size => parts[1].to_i,
             :name => parts[2].chomp }
-        when ?E
+        when 'E'
           { :type => :end }
         else raise ArgumentError, "unknown directive: #{text.inspect}"
         end

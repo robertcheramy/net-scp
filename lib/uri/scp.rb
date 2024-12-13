@@ -20,7 +20,7 @@ module URI
     def initialize(*args)
       super(*args)
 
-      @options = Hash.new
+      @options = {}
       (query || "").split(/&/).each do |pair|
         name, value = pair.split(/=/, 2)
         opt_name = name.to_sym

@@ -129,13 +129,6 @@ Naming/FileName:
     - 'Rakefile.rb'
     - 'lib/uri/open-scp.rb'
 
-
-# Offense count: 5
-# This cop supports safe autocorrection (--autocorrect).
-Style/CharacterLiteral:
-  Exclude:
-    - 'lib/net/scp/download.rb'
-
 # Offense count: 3
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: EnforcedStyle.
@@ -153,12 +146,6 @@ Style/Documentation:
     - 'test/**/*'
     - 'lib/net/scp.rb'
     - 'lib/uri/open-scp.rb'
-    - 'lib/uri/scp.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/EmptyLiteral:
-  Exclude:
     - 'lib/uri/scp.rb'
 
 # Offense count: 4
