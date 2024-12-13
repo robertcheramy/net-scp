@@ -197,7 +197,7 @@ module Net
     # top of it. If a block is given, the SCP session is yielded, and the
     # SSH session is closed automatically when the block terminates. If no
     # block is given, the SCP session is returned.
-    def self.start(host, username, options={})
+    def self.start(host, username, options = {})
       session = Net::SSH.start(host, username, options)
       scp = new(session)
 
@@ -220,7 +220,7 @@ module Net
     # options (e.g., to set the password, etc.). All other options are passed
     # to the #upload! method. If a block is given, it will be used to report
     # progress (see "Progress Reporting", under Net::SCP).
-    def self.upload!(host, username, local, remote, options={}, &progress)
+    def self.upload!(host, username, local, remote, options = {}, &progress)
       options = options.dup
       start(host, username, options.delete(:ssh) || {}) do |scp|
         scp.upload!(local, remote, options, &progress)
@@ -234,7 +234,7 @@ module Net
     # options (e.g., to set the password, etc.). All other options are passed
     # to the #download! method. If a block is given, it will be used to report
     # progress (see "Progress Reporting", under Net::SCP).
-    def self.download!(host, username, remote, local=nil, options={}, &progress)
+    def self.download!(host, username, remote, local = nil, options = {}, &progress)
       options = options.dup
       start(host, username, options.delete(:ssh) || {}) do |scp|
         return scp.download!(remote, local, options, &progress)
@@ -272,14 +272,14 @@ module Net
     #
     #   channel = scp.upload("/local/path", "/remote/path")
     #   channel.wait
-    def upload(local, remote, options={}, &progress)
+    def upload(local, remote, options = {}, &progress)
       start_command(:upload, local, remote, options, &progress)
     end
 
     # Same as #upload, but blocks until the upload finishes. Identical to
     # calling #upload and then calling the #wait method on the channel object
     # that is returned. The return value is not defined.
-    def upload!(local, remote, options={}, &progress)
+    def upload!(local, remote, options = {}, &progress)
       upload(local, remote, options, &progress).wait
     end
 
@@ -300,7 +300,7 @@ module Net
     #
     #   channel = scp.download("/remote/path", "/local/path")
     #   channel.wait
-    def download(remote, local, options={}, &progress)
+    def download(remote, local, options = {}, &progress)
       start_command(:download, local, remote, options, &progress)
     end
 
@@ -315,7 +315,7 @@ module Net
     # and the resulting string returned.
     #
     #   data = download!("/remote/path")
-    def download!(remote, local=nil, options={}, &progress)
+    def download!(remote, local = nil, options = {}, &progress)
       destination = local ? local : StringIO.new.tap { |io| io.set_encoding('BINARY') }
       download(remote, destination, options, &progress).wait
       local ? true : destination.string
@@ -340,7 +340,7 @@ module Net
       # it (see #scp_command). It then sets up the necessary callbacks, and
       # sets up a state machine to use to process the upload or download.
       # (See Net::SCP::Upload and Net::SCP::Download).
-      def start_command(mode, local, remote, options={}, &callback)
+      def start_command(mode, local, remote, options = {}, &callback)
         session.open_channel do |channel|
           if options[:shell]
             escaped_file = shellescape(remote).gsub(/'/) { |m| "'\\''" }
@@ -351,13 +351,13 @@ module Net
 
           channel.exec(command) do |ch, success|
             if success
-              channel[:local   ] = local
-              channel[:remote  ] = remote
-              channel[:options ] = options.dup
+              channel[:local] = local
+              channel[:remote] = remote
+              channel[:options] = options.dup
               channel[:callback] = callback
-              channel[:buffer  ] = Net::SSH::Buffer.new
-              channel[:state   ] = "#{mode}_start"
-              channel[:stack   ] = []
+              channel[:buffer] = Net::SSH::Buffer.new
+              channel[:state] = "#{mode}_start"
+              channel[:stack] = []
               channel[:error_string] = ''
 
               channel.on_close do
@@ -393,7 +393,7 @@ module Net
       # at +next_state+ and continue processing.
       def await_response(channel, next_state)
         channel[:state] = :await_response
-        channel[:next ] = next_state.to_sym
+        channel[:next] = next_state.to_sym
         # check right away, to see if the response is immediately available
         await_response_state(channel)
       end

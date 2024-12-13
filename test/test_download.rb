@@ -273,7 +273,7 @@ class TestDownload < Net::SCP::TestCase
 
   private
 
-    def simple_download(channel, mode=0666)
+    def simple_download(channel, mode = 0666)
       channel.sends_ok
       channel.gets_data "C%04o 1234 remote.txt\n" % mode
       channel.sends_ok

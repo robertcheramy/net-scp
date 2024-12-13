@@ -14,7 +14,7 @@ Rake::Task[:release].prerequisites.unshift(:check_NET_SSH_BUILDGEM_SIGNED)
 
 task default: [:rubocop, :test]
 
-CLEAN.include [ 'pkg', 'rdoc' ]
+CLEAN.include ['pkg', 'rdoc']
 name = "net-scp"
 
 require_relative "lib/net/scp/version"
@@ -68,7 +68,7 @@ Rake::TestTask.new do |t|
   t.libs = ["lib", "test"]
 end
 
-extra_files = %w[LICENSE.txt THANKS.txt CHANGES.txt ]
+extra_files = %w[LICENSE.txt THANKS.txt CHANGES.txt]
 RDoc::Task.new do |rdoc|
   rdoc.rdoc_dir = "rdoc"
   rdoc.title = "#{name} #{version}"
