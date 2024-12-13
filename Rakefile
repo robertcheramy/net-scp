@@ -77,9 +77,9 @@ RDoc::Task.new do |rdoc|
   rdoc.rdoc_files.include("README*")
   rdoc.rdoc_files.include("bin/*.rb")
   rdoc.rdoc_files.include("lib/**/*.rb")
-  extra_files.each { |file|
+  extra_files.each do |file|
     rdoc.rdoc_files.include(file) if File.exist?(file)
-  }
+  end
 end
 
 require 'rubocop/rake_task'
