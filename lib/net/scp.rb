@@ -191,7 +191,8 @@ module Net
   #++
   class SCP
     include Net::SSH::Loggable
-    include Upload, Download
+    include Download
+    include Upload
 
     # Starts up a new SSH connection and instantiates a new SCP session on
     # top of it. If a block is given, the SCP session is yielded, and the
