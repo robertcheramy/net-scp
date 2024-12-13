@@ -29,8 +29,8 @@ module Net
       end
 
       # Compare this version to the given +version+ object.
-      def <=>(version)
-        to_i <=> version.to_i
+      def <=>(other)
+        to_i <=> other.to_i
       end
 
       # Converts this version object to a string, where each of the three
