@@ -42,7 +42,7 @@ module Net
       # Converts this version to a canonical integer that may be compared
       # against other version objects.
       def to_i
-        @to_i ||= @major * 1_000_000 + @minor * 1_000 + @tiny
+        @to_i ||= (@major * 1_000_000) + (@minor * 1_000) + @tiny
       end
 
       # The major component of this version of the Net::SSH library

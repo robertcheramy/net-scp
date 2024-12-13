@@ -82,7 +82,7 @@ class TestDownload < Net::SCP::TestCase
   end
 
   def test_download_with_progress_callback_should_invoke_callback
-    prepare_file("/path/to/local.txt", "a" * 3000 + "b" * 3000 + "c" * 3000 + "d" * 3000)
+    prepare_file("/path/to/local.txt", ("a" * 3000) + ("b" * 3000) + ("c" * 3000) + ("d" * 3000))
 
     expect_scp_session "-f /path/to/remote.txt" do |channel|
       channel.sends_ok
