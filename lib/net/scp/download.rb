@@ -98,26 +98,26 @@ module Net
         case type = text[0]
         when "\x00"
           # Success
-          { :type => :OK }
+          { type: :OK }
         when "\x01"
-          { :type => :warning,
-            :message => text[1..-1] }
+          { type: :warning,
+            message: text[1..-1] }
         when "\x02"
-          { :type => :error,
-            :message => text[1..-1] }
+          { type: :error,
+            message: text[1..-1] }
         when 'T'
           parts = text[1..-1].split(/ /, 4).map { |i| i.to_i }
-          { :type => :times,
-            :mtime => Time.at(parts[0], parts[1]),
-            :atime => Time.at(parts[2], parts[3]) }
+          { type: :times,
+            mtime: Time.at(parts[0], parts[1]),
+            atime: Time.at(parts[2], parts[3]) }
         when 'C', 'D'
           parts = text[1..-1].split(/ /, 3)
-          { :type => (type == 'C' ? :file : :directory),
-            :mode => parts[0].to_i(8),
-            :size => parts[1].to_i,
-            :name => parts[2].chomp }
+          { type: (type == 'C' ? :file : :directory),
+            mode: parts[0].to_i(8),
+            size: parts[1].to_i,
+            name: parts[2].chomp }
         when 'E'
-          { :type => :end }
+          { type: :end }
         else raise ArgumentError, "unknown directive: #{text.inspect}"
         end
       end
@@ -152,7 +152,7 @@ module Net
             channel[:local]
         end
 
-        channel[:file] = directive.merge(:times => channel[:times])
+        channel[:file] = directive.merge(times: channel[:times])
         channel[:io] = channel[:local].respond_to?(:write) ? channel[:local] :
           File.new(directive[:name], "wb", directive[:mode] | 0600)
         channel[:times] = nil

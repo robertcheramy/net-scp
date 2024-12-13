@@ -126,19 +126,6 @@ Style/FormatString:
 Style/FormatStringToken:
   EnforcedStyle: unannotated
 
-# Offense count: 48
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, EnforcedShorthandSyntax, UseHashRocketsWithSymbolValues, PreferHashRocketsForNonAlnumEndingSymbols.
-# SupportedStyles: ruby19, hash_rockets, no_mixed_keys, ruby19_no_mixed_keys
-# SupportedShorthandSyntax: always, never, either, consistent, either_consistent
-Style/HashSyntax:
-  Exclude:
-    - 'lib/net/scp/download.rb'
-    - 'lib/uri/open-scp.rb'
-    - 'test/test_download.rb'
-    - 'test/test_scp.rb'
-    - 'test/test_upload.rb'
-
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle.

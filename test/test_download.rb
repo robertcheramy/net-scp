@@ -50,7 +50,7 @@ class TestDownload < Net::SCP::TestCase
     end
 
     File.expects(:utime).with(Time.at(12121212, 232323), Time.at(1234567890, 123456), "/path/to/local.txt")
-    assert_scripted { scp.download!("/path/to/remote.txt", "/path/to/local.txt", :preserve => true) }
+    assert_scripted { scp.download!("/path/to/remote.txt", "/path/to/local.txt", preserve: true) }
     assert_equal "a" * 1234, file.io.string
   end
 
@@ -117,7 +117,7 @@ class TestDownload < Net::SCP::TestCase
   def test_download_io_with_recursive_should_raise_error
     expect_scp_session "-f -r /path/to/remote.txt"
     Net::SSH::Test::Extensions::IO.with_test_extension do
-      assert_raises(Net::SCP::Error) { scp.download!("/path/to/remote.txt", StringIO.new, :recursive => true) }
+      assert_raises(Net::SCP::Error) { scp.download!("/path/to/remote.txt", StringIO.new, recursive: true) }
     end
   end
 
@@ -127,7 +127,7 @@ class TestDownload < Net::SCP::TestCase
     end
 
     io = StringIO.new
-    assert_scripted { scp.download!("/path/to/remote.txt", io, :preserve => true) }
+    assert_scripted { scp.download!("/path/to/remote.txt", io, preserve: true) }
     assert_equal "a" * 1234, io.string
   end
 
@@ -192,7 +192,7 @@ class TestDownload < Net::SCP::TestCase
     end
 
     Net::SSH::Test::Extensions::IO.with_test_extension do
-      e = assert_raises(Net::SCP::Error) { scp.download!("/path/to/remote", "/path/to/local", :recursive => true) }
+      e = assert_raises(Net::SCP::Error) { scp.download!("/path/to/remote", "/path/to/local", recursive: true) }
       assert_match(/exists and is not a directory/, e.message)
     end
   end
@@ -220,7 +220,7 @@ class TestDownload < Net::SCP::TestCase
     end
 
     Net::SSH::Test::Extensions::IO.with_test_extension do
-      scp.download!("/path/to/remote", "/path/to/local", :recursive => true, :ssh => { :verbose => :debug })
+      scp.download!("/path/to/remote", "/path/to/local", recursive: true, ssh: { verbose: :debug })
     end
     assert_equal "a" * 1234, file.io.string
   end

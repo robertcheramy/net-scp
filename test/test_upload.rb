@@ -58,7 +58,7 @@ class TestUpload < Net::SCP::TestCase
       channel.gets_ok
     end
 
-    assert_scripted { scp.upload!("/path/to/local.txt", "/path/to/remote.txt", :preserve => true) }
+    assert_scripted { scp.upload!("/path/to/local.txt", "/path/to/remote.txt", preserve: true) }
   end
 
   def test_upload_file_with_progress_callback_should_invoke_callback
@@ -82,7 +82,7 @@ class TestUpload < Net::SCP::TestCase
     end
 
     assert_scripted do
-      scp.upload!("/path/to/local.txt", "/path/to/remote.txt", :chunk_size => 3000, &progress)
+      scp.upload!("/path/to/local.txt", "/path/to/remote.txt", chunk_size: 3000, &progress)
     end
 
     assert_equal ["/path/to/local.txt",     0, 12000], calls.shift
@@ -104,7 +104,7 @@ class TestUpload < Net::SCP::TestCase
     end
 
     io = StringIO.new("a" * 1234)
-    assert_scripted { scp.upload!(io, "/path/to/remote.txt", :recursive => true) }
+    assert_scripted { scp.upload!(io, "/path/to/remote.txt", recursive: true) }
   end
 
   def test_upload_io_with_preserve_should_ignore_preserve
@@ -118,7 +118,7 @@ class TestUpload < Net::SCP::TestCase
     end
 
     io = StringIO.new("a" * 1234)
-    assert_scripted { scp.upload!(io, "/path/to/remote.txt", :preserve => true) }
+    assert_scripted { scp.upload!(io, "/path/to/remote.txt", preserve: true) }
   end
 
   def test_upload_io_should_transfer_data
@@ -146,7 +146,7 @@ class TestUpload < Net::SCP::TestCase
     end
 
     io = StringIO.new("a" * 1234)
-    assert_scripted { scp.upload!(io, "/path/to/remote.txt", :mode => 0666) }
+    assert_scripted { scp.upload!(io, "/path/to/remote.txt", mode: 0666) }
   end
 
   def test_upload_directory_without_recursive_should_error
@@ -172,7 +172,7 @@ class TestUpload < Net::SCP::TestCase
       channel.gets_ok
     end
 
-    assert_scripted { scp.upload!("/path/to/local", "/path/to/remote", :recursive => true) }
+    assert_scripted { scp.upload!("/path/to/local", "/path/to/remote", recursive: true) }
   end
 
   def test_upload_directory_should_recursively_create_and_upload_items
@@ -211,7 +211,7 @@ class TestUpload < Net::SCP::TestCase
       channel.gets_ok
     end
 
-    assert_scripted { scp.upload!("/path/to/local", "/path/to/remote", :recursive => true) }
+    assert_scripted { scp.upload!("/path/to/local", "/path/to/remote", recursive: true) }
   end
 
   def test_upload_directory_with_preserve_should_send_times_for_all_items
@@ -260,7 +260,7 @@ class TestUpload < Net::SCP::TestCase
       channel.gets_ok
     end
 
-    assert_scripted { scp.upload!("/path/to/local", "/path/to/remote", :preserve => true, :recursive => true) }
+    assert_scripted { scp.upload!("/path/to/local", "/path/to/remote", preserve: true, recursive: true) }
   end
 
   def test_upload_should_not_block
