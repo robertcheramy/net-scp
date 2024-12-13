@@ -36,12 +36,6 @@ Layout/IndentationWidth:
     - 'lib/net/scp/upload.rb'
     - 'test/test_download.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Layout/LeadingEmptyLines:
-  Exclude:
-    - 'net-scp.gemspec'
-
 # Offense count: 6
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle.

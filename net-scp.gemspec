@@ -1,4 +1,3 @@
-
 require_relative 'lib/net/scp/version'
 
 Gem::Specification.new do |spec|
