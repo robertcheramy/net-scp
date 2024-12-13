@@ -28,4 +28,5 @@ Style/NumericLiterals:
   Enabled: false
 
 Style/RegexpLiteral:
-  EnforcedStyle: slashes
+  EnforcedStyle: mixed
+  AllowInnerSlashes: true
