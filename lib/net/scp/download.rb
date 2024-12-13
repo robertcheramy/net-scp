@@ -125,7 +125,7 @@ module Net
       # Sets the new directory as the current directory, creates the directory
       # if it does not exist, and then falls back into #read_directive_state.
       def read_directory(channel, directive)
-        raise Net::SCP::Error, ":recursive not specified for directory download" if !channel[:options][:recursive]
+        raise Net::SCP::Error, ":recursive not specified for directory download" unless channel[:options][:recursive]
 
         channel[:local] = File.join(channel[:local], directive[:name])
 
@@ -146,7 +146,7 @@ module Net
       # Opens the given file locally, and switches to #read_data_state to do the
       # actual read.
       def read_file(channel, directive)
-        if !channel[:local].respond_to?(:write)
+        unless channel[:local].respond_to?(:write)
           directive[:name] = (channel[:options][:recursive] || File.directory?(channel[:local])) ?
             File.join(channel[:local], directive[:name]) :
             channel[:local]
