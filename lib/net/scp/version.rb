@@ -55,7 +55,7 @@ module Net
       MINOR = 0
 
       # The tiny component of this version of the Net::SSH library
-      TINY  = 'rc01'
+      TINY  = 'rc01'.freeze
 
       # The prerelease component of this version of the Net::SSH library
       # nil allowed
