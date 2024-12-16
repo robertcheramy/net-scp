@@ -1,5 +1,10 @@
 # Changelog
 
+## [4.0.3.fork - 2024-12-13 ]
+### Changed
+- Versioning with patchversion and prerelese-version set to fork, to work with
+  dependencies from other gems (@robertcheramy)
+
 ## [ 4.0.fork02 - 2024-12-13 ]
 ### Added
 - Integrated RuboCop for code style and quality enforcement. (@robertcheramy)

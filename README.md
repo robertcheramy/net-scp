@@ -12,7 +12,8 @@ So I will try to maintain "my" version of Net::SCP in this repository until I
 find a solution with the Net::SCP team.
 
 I plan to keep the original Major and Minor version of Net:SSCP, and
-differentiate with the patch version in the format fork(number): 4.0.fork01.
+differentiate with the patch version and the prerelease version set to fork:
+4.0.3.fork.
 
 Issues and Pull Requests are welcome in this fork, just use the github
 funtionality.

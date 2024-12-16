@@ -55,11 +55,11 @@ module Net
       MINOR = 0
 
       # The tiny component of this version of the Net::SSH library
-      TINY  = 'fork02'.freeze
+      TINY  = 3
 
       # The prerelease component of this version of the Net::SSH library
       # nil allowed
-      PRE   = nil
+      PRE   = 'fork'.freeze
 
       # The current version of the Net::SSH library as a Version instance
       CURRENT = new(*[MAJOR, MINOR, TINY, PRE].compact)
