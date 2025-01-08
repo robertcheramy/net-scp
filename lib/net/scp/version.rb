@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Net
   class SCP
     # A class for describing the current version of a library. The version
