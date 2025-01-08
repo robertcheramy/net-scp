@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Net
   class SCP
     # A class for describing the current version of a library. The version
@@ -27,15 +25,12 @@ module Net
 
       # Create a new Version object with the given components.
       def initialize(major, minor, tiny, pre = nil)
-        @major = major
-        @minor = minor
-        @tiny = tiny
-        @pre = pre
+        @major, @minor, @tiny, @pre = major, minor, tiny, pre
       end
 
       # Compare this version to the given +version+ object.
-      def <=>(other)
-        to_i <=> other.to_i
+      def <=>(version)
+        to_i <=> version.to_i
       end
 
       # Converts this version object to a string, where each of the three
@@ -47,7 +42,7 @@ module Net
       # Converts this version to a canonical integer that may be compared
       # against other version objects.
       def to_i
-        @to_i ||= (@major * 1_000_000) + (@minor * 1_000) + @tiny
+        @to_i ||= @major * 1_000_000 + @minor * 1_000 + @tiny
       end
 
       # The major component of this version of the Net::SSH library
@@ -57,11 +52,11 @@ module Net
       MINOR = 0
 
       # The tiny component of this version of the Net::SSH library
-      TINY  = 3
+      TINY  = 1
 
       # The prerelease component of this version of the Net::SSH library
       # nil allowed
-      PRE   = 'fork'.freeze
+      PRE   = "rc2"
 
       # The current version of the Net::SSH library as a Version instance
       CURRENT = new(*[MAJOR, MINOR, TINY, PRE].compact)

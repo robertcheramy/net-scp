@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'stringio'
 require 'shellwords'
 
@@ -327,7 +329,7 @@ module Net
     # (:verbose, :recursive, :preserve). Returns the command-line as a
     # string, ready to execute.
     def scp_command(mode, options)
-      command = "scp "
+      command = "scp ".dup
       command << (mode == :upload ? "-t" : "-f")
       command << " -v" if options[:verbose]
       command << " -r" if options[:recursive]
@@ -341,7 +343,14 @@ module Net
     # (See Net::SCP::Upload and Net::SCP::Download).
     def start_command(mode, local, remote, options = {}, &callback)
       session.open_channel do |channel|
-        if options[:shell]
+
+        if options[:windows_path]
+          escaped_file = remote.gsub(/'/) { |m| '/' }
+          unless escaped_file.index(' ').nil? || escaped_file.match?(/^'.+'$/)
+            escaped_file = "'#{escaped_file}'"
+          end
+          command = "#{scp_command(mode, options)} #{escaped_file}"
+        elsif options[:shell]
           escaped_file = shellescape(remote).gsub(/'/) { |_m| "'\\''" }
           command = "#{options[:shell]} -c '#{scp_command(mode, options)} #{escaped_file}'"
         else
@@ -357,7 +366,7 @@ module Net
             channel[:buffer] = Net::SSH::Buffer.new
             channel[:state] = "#{mode}_start"
             channel[:stack] = []
-            channel[:error_string] = ''
+            channel[:error_string] = ''.dup
 
             channel.on_close do
               # If we got an exit-status and it is not 0, something went wrong

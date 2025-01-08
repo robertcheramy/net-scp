@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'uri/generic'
 
 module URI
@@ -31,5 +33,9 @@ module URI
     end
   end
 
-  @@schemes['SCP'] = SCP
+  if respond_to? :register_scheme
+    register_scheme "SCP", SCP
+  else
+    @@schemes["SCP"] = SCP
+  end
 end

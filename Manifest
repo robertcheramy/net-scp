@@ -8,6 +8,7 @@ lib/uri/open-scp.rb
 lib/uri/scp.rb
 Rakefile
 README.md
+setup.rb
 test/common.rb
 test/test_all.rb
 test/test_download.rb
