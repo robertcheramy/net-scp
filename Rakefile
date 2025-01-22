@@ -65,6 +65,7 @@ end
 
 require 'rake/testtask'
 Rake::TestTask.new do |t|
+  t.ruby_opts = ['-W:deprecated']
   t.libs = ["lib", "test"]
 end
 
