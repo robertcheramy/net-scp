@@ -29,21 +29,9 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.require_paths = ["lib"]
 
-  if spec.respond_to? :specification_version then
-    spec.specification_version = 3
+  spec.add_dependency 'net-ssh',               '>= 2.6.5', '< 8.0.0'
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      spec.add_runtime_dependency(%q<net-ssh>, [">= 2.6.5", "< 8.0.0"])
-      spec.add_development_dependency(%q<test-unit>, [">= 0"])
-      spec.add_development_dependency(%q<mocha>, [">= 0"])
-    else
-      spec.add_dependency(%q<net-ssh>, [">= 2.6.5", "< 8.0.0"])
-      spec.add_dependency(%q<test-unit>, [">= 0"])
-      spec.add_dependency(%q<mocha>, [">= 0"])
-    end
-  else
-    spec.add_dependency(%q<net-ssh>, [">= 2.6.5", "< 8.0.0"])
-    spec.add_dependency(%q<test-unit>, [">= 0"])
-    spec.add_dependency(%q<mocha>, [">= 0"])
-  end
+  spec.add_development_dependency 'mocha'
+  spec.add_development_dependency 'test-unit'
+  spec.add_development_dependency 'rdoc'
 end
